@@ -12,9 +12,9 @@ The goal of this activity is to recreate an mail softwre, applying the knowledge
 ### Specifications
 
 #### Send Mail
-- []  When a user submits the email composition form, add JavaScript code to actually send the email.
-- [] You’ll likely want to make a POST request to /emails, passing in values for recipients, subject, and body.
-- [] Once the email has been sent, load the user’s sent mailbox.
+- [x]  When a user submits the email composition form, add JavaScript code to actually send the email.
+- [x] You’ll likely want to make a POST request to /emails, passing in values for recipients, subject, and body.
+- [x] Once the email has been sent, load the user’s sent mailbox.
 #### Mailbox
 - [] When a user visits their Inbox, Sent mailbox, or Archive, load the appropriate mailbox.
 - [] You’ll likely want to make a GET request to /emails/<mailbox> to request the emails for a particular mailbox.
