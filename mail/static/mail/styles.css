@@ -16,3 +16,11 @@ textarea {
   color: black;
 }
 
+#archive-btn{
+    background: blue;
+    color: white;
+}
+#reply-btn{
+    background: blue;
+    color: white;
+}
