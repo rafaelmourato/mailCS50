@@ -43,7 +43,6 @@ function load_mailbox(mailbox) {
   document.querySelector('#emails-view').style.display = 'block';
   document.querySelector('#compose-view').style.display = 'none';
 
-
   fetch(`/emails/${mailbox}`)
   .then(response => response.json())
   .then(emails => {
@@ -51,8 +50,13 @@ function load_mailbox(mailbox) {
       console.log(emails);
       // ... do something else with emails ...
       emails.forEach(function(email) {
-        const content = document.createElement('div').innerHTML = email.subject;
-        document.querySelector('#emails-view').append(content);
+        const element = document.createElement('div');
+        element.className = "email-item"
+        element.innerHTML = `${email.subject}  ${email.sender}`;
+        element.addEventListener('click', function() {
+            console.log('This element has been clicked!')
+        }); 
+      document.querySelector('#emails-view').append(element);
       })
   });
 
