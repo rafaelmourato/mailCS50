@@ -46,18 +46,28 @@ function load_mailbox(mailbox) {
   fetch(`/emails/${mailbox}`)
   .then(response => response.json())
   .then(emails => {
+    if (emails.length === 0){
+      const element = document.createElement('div');
+      element.innerHTML = `No emails in this box yet.`;
+      document.querySelector('#emails-view').append(element);
+    }else{
       // Print emails
       console.log(emails);
       // ... do something else with emails ...
       emails.forEach(function(email) {
         const element = document.createElement('div');
-        element.className = "email-item"
-        element.innerHTML = `${email.subject}  ${email.sender}`;
+        element.className = `email-div border p-2 ${email.read ? 'bg-light' : 'bg-white'}`;
+        element.innerHTML = `
+        <span class="sender">${email.sender}</span>
+        <span class="subject ml-4">${email.subject}</span>
+        <span class="timestamp float-right text-muted">${email.timestamp}</span>
+        `;
         element.addEventListener('click', function() {
             console.log('This element has been clicked!')
         }); 
       document.querySelector('#emails-view').append(element);
       })
+    }
   });
 
   // Show the mailbox name

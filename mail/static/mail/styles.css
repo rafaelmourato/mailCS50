@@ -2,6 +2,17 @@ textarea {
     min-height: 400px;
 }
 
-.email-item{
-    border: 2px solid;
+.email-div {
+  cursor: pointer;
+  border-radius: 6px;
+  margin-bottom: 8px;
 }
+
+.email-div .sender {
+  font-weight: bold;
+}
+
+.email-div .subject {
+  color: black;
+}
+
