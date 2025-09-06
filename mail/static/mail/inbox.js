@@ -43,6 +43,19 @@ function load_mailbox(mailbox) {
   document.querySelector('#emails-view').style.display = 'block';
   document.querySelector('#compose-view').style.display = 'none';
 
+
+  fetch(`/emails/${mailbox}`)
+  .then(response => response.json())
+  .then(emails => {
+      // Print emails
+      console.log(emails);
+      // ... do something else with emails ...
+      emails.forEach(function(email) {
+        const content = document.createElement('div').innerHTML = email.subject;
+        document.querySelector('#emails-view').append(content);
+      })
+  });
+
   // Show the mailbox name
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
 }
