@@ -7,6 +7,10 @@ textarea {
   border-radius: 6px;
   margin-bottom: 8px;
 }
+.email-body {
+  white-space: pre-wrap; 
+  font-family: sans-serif;
+}
 
 .email-div .sender {
   font-weight: bold;
@@ -16,11 +20,3 @@ textarea {
   color: black;
 }
 
-#archive-btn{
-    background: blue;
-    color: white;
-}
-#reply-btn{
-    background: blue;
-    color: white;
-}

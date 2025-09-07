@@ -49,7 +49,7 @@ function load_mailbox(mailbox) {
   .then(emails => {
     if (emails.length === 0){
       const element = document.createElement('div');
-      element.innerHTML = `No emails on this box yet.`;
+      element.innerHTML = `There are no emails here yet.`;
       document.querySelector('#emails-view').append(element);
     }else{
       // Print emails
@@ -92,16 +92,16 @@ function show_email(id){
       // ... do something else with email ...
       const element = document.createElement('div');
       element.innerHTML = `
-      <div>From: ${email.sender}</div> 
-      <div>To: ${email.recipients}</div> 
-      <div>Subject: ${email.subject}</div>
-      <div>Date: ${email.timestamp}</div>
+      <div><strong>From:</strong> ${email.sender}</div> 
+      <div><strong>To:</strong> ${email.recipients}</div> 
+      <div><strong>Subject:</strong> ${email.subject}</div>
+      <div><strong>Date:</strong> ${email.timestamp}</div>
       <div>
-        <span><button id="reply-btn">Reply</button></span>
-        <span><button id="archive-btn">${email.archived ? 'Unarchive' : 'Archive'}</button></span>
+        <span><button class="btn btn-sm btn-outline-primary mt-1" id="reply-btn">Reply</button></span>
+        <span><button class="btn btn-sm btn-outline-primary mt-1"  id="archive-btn">${email.archived ? 'Unarchive' : 'Archive'}</button></span>
       </div>
       <hr>
-      <div>${email.body}</div>`; 
+      <div><pre>${email.body}</pre></div>`; 
       document.querySelector('#emails-show').append(element);
       document.querySelector('#archive-btn').addEventListener('click', ()=>{
         fetch(`/emails/${id}`, {
@@ -119,7 +119,7 @@ function show_email(id){
         document.querySelector('#compose-recipients').value = `${email.sender}`;
         let subject = email.subject.startsWith("Re:") ? email.subject : `Re: ${email.subject}`;
         document.querySelector('#compose-subject').value = `${subject}`;
-        document.querySelector('#compose-body').value = `\nOn ${email.timestamp} ${email.sender} wrote: ${email.body}`;
+        document.querySelector('#compose-body').value = `\nOn ${email.timestamp} ${email.sender} wrote:\n${email.body}`;
         compose_email()
       });
       
