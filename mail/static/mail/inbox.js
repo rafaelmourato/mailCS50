@@ -23,6 +23,9 @@ function compose_email() {
     .then(response => response.json())
     .then(result => {
       console.log(result);
+      document.querySelector('#compose-recipients').value = '';
+      document.querySelector('#compose-subject').value = '';
+      document.querySelector('#compose-body').value = '';
       load_mailbox('sent')
     })
     return false;
@@ -32,10 +35,6 @@ function compose_email() {
   document.querySelector('#compose-view').style.display = 'block';
   document.querySelector('#emails-show').style.display = 'none';
 
-  // Clear out composition fields
-  document.querySelector('#compose-recipients').value = '';
-  document.querySelector('#compose-subject').value = '';
-  document.querySelector('#compose-body').value = '';
 }
 
 function load_mailbox(mailbox) {
@@ -91,20 +90,19 @@ function show_email(id){
       // Print email
       console.log(email);
       // ... do something else with email ...
-      let element = document.createElement('div');
+      const element = document.createElement('div');
       element.innerHTML = `
       <div>From: ${email.sender}</div> 
       <div>To: ${email.recipients}</div> 
       <div>Subject: ${email.subject}</div>
       <div>Date: ${email.timestamp}</div>
       <div>
-      <span><button id="reply-btn">Reply</button></span>
-      ${email.archived ? '<span><button id="archive-btn">Unarchive</button></span>' : '<span><button id="archive-btn">Archive</button></span>' }
+        <span><button id="reply-btn">Reply</button></span>
+        <span><button id="archive-btn">${email.archived ? 'Unarchive' : 'Archive'}</button></span>
       </div>
       <hr>
       <div>${email.body}</div>`; 
       document.querySelector('#emails-show').append(element);
-
       document.querySelector('#archive-btn').addEventListener('click', ()=>{
         fetch(`/emails/${id}`, {
           method: 'PUT',
@@ -116,6 +114,15 @@ function show_email(id){
           load_mailbox('inbox')
         })
       });
+      //Reply button is broken, and figure out the archive and reply button.
+      document.querySelector('#reply-btn').addEventListener('click', ()=> {
+        document.querySelector('#compose-recipients').value = `${email.sender}`;
+        let subject = email.subject.startsWith("Re:") ? email.subject : `Re: ${email.subject}`;
+        document.querySelector('#compose-subject').value = `${subject}`;
+        document.querySelector('#compose-body').value = `\nOn ${email.timestamp} ${email.sender} wrote: ${email.body}`;
+        compose_email()
+      });
+      
   });
   
     // Show the mailbox and hide other views
