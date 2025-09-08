@@ -87,7 +87,6 @@ function show_email(id, mailbox){
   fetch(`/emails/${id}`)
   .then(response => response.json())
   .then(email => {
-      // Print email
       if(mailbox !== 'sent'){
         buttonsHtml = `
           <div>
