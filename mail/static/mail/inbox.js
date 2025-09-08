@@ -54,7 +54,6 @@ function load_mailbox(mailbox) {
     }else{
       // Print emails
       console.log(emails);
-      // ... do something else with emails ...
       emails.forEach(function(email) {
         const element = document.createElement('div');
         element.className = `email-div border p-2 ${email.read ? 'bg-light' : 'bg-white'}`;
@@ -70,7 +69,7 @@ function load_mailbox(mailbox) {
                 read: true
             })
           })
-          show_email(email.id)
+          show_email(email.id,mailbox)
         }); 
       document.querySelector('#emails-view').append(element);
       })
@@ -81,25 +80,29 @@ function load_mailbox(mailbox) {
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
 }
 
-function show_email(id){
+function show_email(id, mailbox){
   const content = document.querySelector('#emails-show');
   content.innerHTML = '';
+  let buttonsHtml = '';
   fetch(`/emails/${id}`)
   .then(response => response.json())
   .then(email => {
       // Print email
+      if(mailbox !== 'sent'){
+        buttonsHtml = `
+          <div>
+            <span><button class="btn btn-sm btn-outline-primary mt-1" id="reply-btn">Reply</button></span>
+            <span><button class="btn btn-sm btn-outline-primary mt-1"  id="archive-btn">${email.archived ? 'Unarchive' : 'Archive'}</button></span>
+          </div>`
+      }
       console.log(email);
-      // ... do something else with email ...
       const element = document.createElement('div');
       element.innerHTML = `
       <div><strong>From:</strong> ${email.sender}</div> 
       <div><strong>To:</strong> ${email.recipients}</div> 
       <div><strong>Subject:</strong> ${email.subject}</div>
       <div><strong>Date:</strong> ${email.timestamp}</div>
-      <div>
-        <span><button class="btn btn-sm btn-outline-primary mt-1" id="reply-btn">Reply</button></span>
-        <span><button class="btn btn-sm btn-outline-primary mt-1"  id="archive-btn">${email.archived ? 'Unarchive' : 'Archive'}</button></span>
-      </div>
+       ${buttonsHtml}
       <hr>
       <div><pre>${email.body}</pre></div>`; 
       document.querySelector('#emails-show').append(element);
@@ -114,7 +117,6 @@ function show_email(id){
           load_mailbox('inbox')
         })
       });
-      //Reply button is broken, and figure out the archive and reply button.
       document.querySelector('#reply-btn').addEventListener('click', ()=> {
         document.querySelector('#compose-recipients').value = `${email.sender}`;
         let subject = email.subject.startsWith("Re:") ? email.subject : `Re: ${email.subject}`;
